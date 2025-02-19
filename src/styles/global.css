@@ -1,0 +1,84 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .App {
+    min-height: 100vh;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Navbar styles */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .nav-links a {
+    color: #666;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+
+  .nav-links a:hover {
+    background-color: #f5f5f5;
+  }
+
+  .warning-button {
+    background-color: #ffbc02;
+    color: #ffffff;
+  }
+
+  .warning-button:hover {
+    background-color: #eeaf00;
+  }
+
+  .danger-button {
+    background-color: #fd4444d8;
+    color: #ffffff;
+  }
+
+  .danger-button:hover {
+    background-color: #cc0000;
+  }
+
+  .success-button {
+    background-color: #68c468;
+    color: #ffffff;
+  }
+
+  .success-button:hover {
+    background-color: #009900;
+  }
+
+  .info-button {
+    background-color: #3a8adb;
+    color: #ffffff;
+  }
+
+  .info-button:hover {
+    background-color: #0052a3;
+  }
+

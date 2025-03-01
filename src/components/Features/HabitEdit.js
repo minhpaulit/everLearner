@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
-import './HabitEdit.css';
+import './ConnectionConfig.css';
+import { useConnection } from '../../context/ConnectionContext';
 
 function HabitEdit() {
+  const { connection } = useConnection();
   const navigate = useNavigate();
+  const { id } = useParams();
   const [habitData, setHabitData] = useState({
-    title: '',
+    id: '',
+    name: '',
     description: '',
-    content: ''
+    full_text: '',
+    contents: [],
+    completed_contents: [],
+    separator: '\n',
+    created_at: '',
+    updated_at: '',
+    user_id: '',
+    connection_id: '',
+    num_sent: 0,
+    Frequency: ''
   });
-  const [generatedCards, setGeneratedCards] = useState([]);
+
+  useEffect(() => {
+    const fetchHabitData = async () => {
+      if (id) {
+        const response = await fetch(`http://127.0.0.1:5000/api/habits/${id}`);
+        const data = await response.json();
+        setHabitData(data);
+      }
+    };
+
+    fetchHabitData();
+  }, [id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,110 +44,108 @@ function HabitEdit() {
     }));
   };
 
-  const handleGenerate = () => {
-    // Example generated cards - replace with your actual generation logic
-    const newCards = [
-      {
-        title: '1st Card',
-        time: '18/02/2025 - 6:00 AM',
-        steps: ['Wake up', 'Drink water', 'Exercise'],
-        content: "Lorem ipsum dolor sit amet \n Praesent quis rhoncus felis, ut tempor elit. Ut id fermentum sapien. Donec aliquet nunc metus, at dignissim neque rutrum et. Donec aliquam metus nunc, ac ultricies massa ultricies id."
-      },
-      {
-        title: '2nd Card',
-        time: '19/02/2025 - 6:00 PM',
-        content: "Cras fringilla velit neque \n in facilisis magna tristique eu. Integer molestie vel tortor eu mattis. Nullam ut ipsum sodales, porttitor mi non, condimentum metus. Nunc porta semper mollis. Nulla quis urna quis mauris tristique faucibus. Vivamus eleifend nisi neque, fermentum blandit libero interdum in. Duis enim quam, gravida vel convallis nec, egestas sit amet felis. Aliquam erat volutpat. Nulla facilisis imperdiet ex, nec porttitor mauris vehicula vel."
-      }
-    ];
-    setGeneratedCards(newCards);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add your habit update logic here
+    console.log('Habit data:', habitData);
+    navigate('/#habits');
   };
 
   return (
-    <div className="habit-edit-page">
+    <div className="connection-config-page">
       <Navbar />
       
-      <div className="habit-edit-container">
-        <div className="edit-section">
-          <h2>Edit Habit</h2>
-          
-          <div className="form-group">
-            <label htmlFor="title">Habit Name</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={habitData.title}
-              onChange={handleInputChange}
-              placeholder="Enter habit name"
-            />
-          </div>
+      <div className="connection-config-container">
+        <button 
+          className="back-button"
+          onClick={() => navigate('/#habits')}
+        >
+          <span className="back-icon">←</span>
+          Back to Habits
+        </button>
 
-          <div className="form-group">
-            <label htmlFor="description">Short Description</label>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={habitData.description}
-              onChange={handleInputChange}
-              placeholder="Enter a brief description"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="content">Content</label>
-            <textarea
-              id="content"
-              name="content"
-              value={habitData.content}
-              onChange={handleInputChange}
-              placeholder="Enter full content"
-              rows="6"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="separator">Separator</label>
-            <input
-              type="text"
-              id="separator"
-              name="separator"
-              value={habitData.separator || "----"}
-              onChange={handleInputChange}
-              placeholder="Enter a seperate pattern"
-            />
-          </div>
-
-          <div className="button-container">
-            <button className="danger-button" onClick={() => navigate('/')}>
-                Cancel
-            </button>
-            <button className="info-button" onClick={handleGenerate}>
-                Preview
-            </button>
-            <button className="success-button" onClick={handleGenerate}>
-                Save
-            </button>
-          </div>
-        </div>
-
-        <div className="preview-section">
-          <h3>Generated Cards</h3>
-          <div className="cards-container">
-            {generatedCards.map((card, index) => (
-              <div key={index} className="preview-card">
-                <div className="card-header">
-                  <h4>{card.title}</h4>
-                  <span className="time-badge">{card.time}</span>
-                </div>
-                <div className="card-content">
-                    <p style={{ whiteSpace: 'pre-line' }}>{card.content}</p>
-                </div>
+        <div className="form-preview-container">
+          <div className="config-section">
+            <h2>{id ? 'Edit Habit' : 'Add New Habit'}</h2>
+            
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="name">Habit Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={habitData.name}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Weekly Tips"
+                  required
+                />
               </div>
-            ))}
-            {generatedCards.length === 0 && (
-              <p className="no-cards">No cards generated yet. Click "Generate" to create cards.</p>
-            )}
+
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <input
+                  type="text"
+                  id="description"
+                  name="description"
+                  value={habitData.description}
+                  onChange={handleInputChange}
+                  placeholder="Description of the habit"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="full_text">Full Text</label>
+                <textarea
+                  id="full_text"
+                  name="full_text"
+                  value={habitData.full_text}
+                  onChange={handleInputChange}
+                  placeholder="Detailed description of the habit"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="Frequency">Frequency</label>
+                <input
+                  type="text"
+                  id="Frequency"
+                  name="Frequency"
+                  value={habitData.Frequency}
+                  onChange={handleInputChange}
+                  placeholder="e.g., Weekly"
+                  required
+                />
+              </div>
+
+              <div className="button-container">
+                <button 
+                  type="button" 
+                  className="danger-button"
+                  onClick={() => navigate('/#habits')}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="success-button"
+                >
+                  {id ? 'Update Habit' : 'Add Habit'}
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <div className="preview-section">
+            <h3>Preview</h3>
+            <div className="connection-preview">
+              <h4>{habitData.name || 'Habit Name'}</h4>
+              <p>{habitData.description || 'Description'}</p>
+              <p>Frequency: {habitData.Frequency || 'N/A'}</p>
+              <p>Created on: {habitData.created_at ? new Date(habitData.created_at).toLocaleDateString() : 'N/A'}</p>
+            </div>
           </div>
         </div>
       </div>

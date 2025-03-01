@@ -46,6 +46,9 @@
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .feature-card:hover {
@@ -65,4 +68,39 @@
 
 .feature-card p {
   color: #666;
+}
+
+.user-info {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.user-name {
+    cursor: pointer;
+    color: #0066cc;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown-menu button {
+    width: 100%;
+    padding: 0.5rem;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+    background-color: #f5f5f5;
 }
